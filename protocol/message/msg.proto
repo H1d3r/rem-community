@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package message;
+option go_package="/;message";
+
+message Login {
+    string ConsoleIP = 1;
+    int32 ConsolePort = 2;
+    string ConsoleProto =3;
+    string Mod = 4;
+    string Token    = 5;
+    string Agent = 8;
+    repeated string Interfaces = 9;
+    string Hostname = 10;
+    string Username = 11;
+    string Wrapper  = 13;
+    string ChannelRole = 14; // "up", "down", or empty (normal)
+    string Via = 15;         // relay ID that forwarded this connection
+}
+
+message Control {
+    string Source = 2;
+    string Destination = 3;
+    string Mod = 5;
+    string Remote = 6;
+    string Local = 7;
+    bool  Fork = 8;
+    map<string, string> options = 12;
+}
+
+message Ack {
+    int32 Status = 1;
+    string Error = 2;
+    int32 Port = 3;
+}
+
+message Ping {
+    string Ping = 1;
+}
+
+message Pong {
+    string Pong = 1;
+}
+
+message ConnStart{
+    uint64 ID = 1;
+    string Destination = 3;
+    string Source = 4;
+//    Plugin plugin = 5;
+}
+
+message ConnEnd{
+    uint64 ID = 1;
+    string Msg = 2;
+}
+
+message Packet{
+    uint64 ID = 1;
+    int32 Index = 2;
+    bytes Data = 5;
+}
+
+message Redirect {
+    string Source = 1;
+    string Destination = 2;
+    string Route = 3;
+    oneof msg {
+        ConnStart start = 10;
+        Packet    packet = 11;
+        ConnEnd   end = 12;
+        CWND      cwnd = 13;
+    }
+}
+
+// Congestion Window
+message CWND{
+    uint64 Bridge = 1;
+    bool CWND = 2;
+    int64 Token = 3;
+}

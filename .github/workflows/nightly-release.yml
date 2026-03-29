@@ -1,0 +1,118 @@
+name: nightly-release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  nightly:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install dependencies
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y \
+            gcc-multilib \
+            g++-multilib \
+            libc6-dev-i386 \
+            upx \
+            zip \
+            mingw-w64 \
+            gcc-mingw-w64-i686 \
+            gcc-mingw-w64-x86-64
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+
+      - name: Set Version Info
+        run: |
+          echo "NIGHTLY_VERSION=nightly-$(date +'%Y%m%d')" >> $GITHUB_ENV
+          echo "COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --snapshot --clean --skip=publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ env.NIGHTLY_VERSION }}
+          GOPATH: "/home/runner/go"
+          COMMIT: ${{ env.COMMIT }}
+          CGO_ENABLED: 0
+
+      - name: Build Libraries
+        run: |
+          # 编译动态库
+          bash build.sh -buildmode c-shared -o "windows/amd64,windows/386,linux/amd64,linux/386"
+          # 编译静态库
+          bash build.sh -buildmode c-archive -o "windows/amd64,linux/amd64"
+
+      - name: Build Full
+        run: |
+          bash build.sh --full
+          # 创建dist目录并移动文件
+          mkdir -p dist
+          for file in rem_*; do
+            if [ -f "$file" ]; then
+              mv "$file" "dist/remfull_${file#rem_}"
+            fi
+          done
+          upx dist/remfull* || true
+
+      - name: Zip files
+        run: |
+          zip -r -j dist/rem_archive.zip dist/rem* dist/full* -x dist/lib/*
+          zip -r dist/rem_lib.zip dist/lib/ -x *.h
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/rem*
+          tag: nightly
+          overwrite: true
+          file_glob: true
+          draft: true
+
+      - name: Delete Old Nightly Releases
+        uses: dev-drprasad/delete-older-releases@v0.3.2
+        with:
+          keep_latest: 7
+          delete_tags: true
+          delete_tag_pattern: nightly
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Nightly Build ${{ env.NIGHTLY_VERSION }}
+          tag_name: nightly
+          prerelease: true
+          files: |
+            dist/**/*
+          body: |
+            🌙 Nightly build 
+
+            📝 Commit: ${{ env.COMMIT }}
+
+            ⚠️ This is an automated nightly build and may be unstable.
+
+            📦 This release includes the latest changes from the main branch.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

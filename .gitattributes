@@ -1,0 +1,9 @@
+# Force LF line endings for all Go source files.
+# This ensures gofmt, go vet, and CI tools work correctly regardless of OS.
+*.go    text eol=lf
+*.sh    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.md    text eol=lf
+*.mod   text eol=lf
+*.sum   text eol=lf

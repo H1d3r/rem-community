@@ -1,0 +1,82 @@
+version: 2
+project_name: rem
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  -
+    main: .
+    binary: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    goos:
+      - windows
+      - linux
+      - darwin
+      - freebsd
+      - solaris
+      - android
+    goarch:
+      - amd64
+      - "386"
+      - arm64
+      - arm
+      - mips
+      - mips64
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: linux
+        goarch: mips64
+      - goos: android
+        goarch: amd64
+      - goos: android
+        goarch: "386"
+      - goos: android
+        goarch: arm
+    ldflags: "-s -w -X 'github.com/chainreactors/rem/cmd/cmd.ver={{ .Tag }}'"
+    flags:
+      - -trimpath
+    asmflags:
+      - all=-trimpath={{.Env.GOPATH}}
+    gcflags:
+      - all=-trimpath={{.Env.GOPATH}}
+    no_unique_dist_dir: true
+    env:
+      - CGO_ENABLED=0
+    tags:
+      - forceposix
+      - osusergo
+      - netgo
+
+upx:
+  -
+    enabled: true
+    goos: [linux, windows]
+    goarch:
+      - amd64
+      - "386"
+
+archives:
+  -
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    format: binary
+
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+
+changelog:
+  sort: desc
+  filters:
+    exclude:
+      - '^MERGE'
+      - "{{ .Tag }}"
+      - "^docs"
+
+release:
+  disable: true
+  skip_upload: true
+  github:
+    owner: chainreactors
+    name: rem
+  draft: true
