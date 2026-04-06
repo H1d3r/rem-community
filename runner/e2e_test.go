@@ -46,7 +46,6 @@ import (
 	_ "github.com/chainreactors/rem/protocol/tunnel/streamhttp"
 	_ "github.com/chainreactors/rem/protocol/tunnel/tcp"
 	_ "github.com/chainreactors/rem/protocol/tunnel/udp"
-	_ "github.com/chainreactors/rem/protocol/tunnel/unix"
 	_ "github.com/chainreactors/rem/protocol/tunnel/websocket"
 	_ "github.com/chainreactors/rem/protocol/wrapper"
 	"github.com/chainreactors/rem/x/cryptor"

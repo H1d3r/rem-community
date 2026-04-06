@@ -526,28 +526,6 @@ jobs:
         env:
           REM_TEST_ICMP: "1"
 
-  tunnel-unix:
-    name: "Tunnel: Unix domain socket"
-    runs-on: ubuntu-22.04
-    needs: [unit-tests]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.21"
-          cache: true
-
-      - name: Install gox
-        run: go install github.com/mitchellh/gox@latest
-
-      - name: Build Unix tunnel
-        run: bash build.sh -a "socks" -t "unix" -o "linux/amd64"
-
-      - name: Test Unix tunnel
-        run: go test -v -timeout 5m -run '^TestE2E_Unix' ./runner/
-
   tunnel-dns:
     name: "Tunnel: DNS (KCP over UDP)"
     runs-on: ubuntu-22.04
