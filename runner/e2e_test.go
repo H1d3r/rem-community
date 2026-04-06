@@ -34,11 +34,11 @@ import (
 	"github.com/chainreactors/rem/protocol/cio"
 	"github.com/chainreactors/rem/protocol/core"
 	"github.com/chainreactors/rem/protocol/message"
-	"github.com/chainreactors/rem/protocol/tunnel"
 	_ "github.com/chainreactors/rem/protocol/serve/http"
 	_ "github.com/chainreactors/rem/protocol/serve/portforward"
 	_ "github.com/chainreactors/rem/protocol/serve/raw"
 	_ "github.com/chainreactors/rem/protocol/serve/socks"
+	"github.com/chainreactors/rem/protocol/tunnel"
 	_ "github.com/chainreactors/rem/protocol/tunnel/http"
 	_ "github.com/chainreactors/rem/protocol/tunnel/http2"
 	_ "github.com/chainreactors/rem/protocol/tunnel/icmp"
@@ -2272,14 +2272,14 @@ func buildRelay2HopFixture(t *testing.T) runner.FixtureSpec {
 	return runner.FixtureSpec{
 		HelperTest: e2eHelperTestPattern,
 		Vars: runner.Vars{
-			"server_port":  fmt.Sprintf("%d", serverPort),
-			"server_addr":  fmt.Sprintf("127.0.0.1:%d", serverPort),
-			"relay_port":   fmt.Sprintf("%d", relayPort),
-			"relay_addr":   fmt.Sprintf("127.0.0.1:%d", relayPort),
-			"socks_port":   fmt.Sprintf("%d", socksPort),
-			"socks_addr":   fmt.Sprintf("127.0.0.1:%d", socksPort),
-			"relay_alias":  relayAlias,
-			"leaf_alias":   leafAlias,
+			"server_port": fmt.Sprintf("%d", serverPort),
+			"server_addr": fmt.Sprintf("127.0.0.1:%d", serverPort),
+			"relay_port":  fmt.Sprintf("%d", relayPort),
+			"relay_addr":  fmt.Sprintf("127.0.0.1:%d", relayPort),
+			"socks_port":  fmt.Sprintf("%d", socksPort),
+			"socks_addr":  fmt.Sprintf("127.0.0.1:%d", socksPort),
+			"relay_alias": relayAlias,
+			"leaf_alias":  leafAlias,
 		},
 		Processes: []runner.ProcessSpec{
 			serverConsoleProcess(fmt.Sprintf("127.0.0.1:%d", serverPort), "--debug -s tcp://0.0.0.0:{{server_port}}/?wrapper=raw -i 127.0.0.1 --no-sub"),
@@ -2318,17 +2318,17 @@ func buildRelay3HopFixture(t *testing.T) runner.FixtureSpec {
 	return runner.FixtureSpec{
 		HelperTest: e2eHelperTestPattern,
 		Vars: runner.Vars{
-			"server_port": fmt.Sprintf("%d", serverPort),
-			"server_addr": fmt.Sprintf("127.0.0.1:%d", serverPort),
+			"server_port":  fmt.Sprintf("%d", serverPort),
+			"server_addr":  fmt.Sprintf("127.0.0.1:%d", serverPort),
 			"relay_c_port": fmt.Sprintf("%d", relayCPort),
 			"relay_c_addr": fmt.Sprintf("127.0.0.1:%d", relayCPort),
 			"relay_b_port": fmt.Sprintf("%d", relayBPort),
 			"relay_b_addr": fmt.Sprintf("127.0.0.1:%d", relayBPort),
-			"socks_port": fmt.Sprintf("%d", socksPort),
-			"socks_addr": fmt.Sprintf("127.0.0.1:%d", socksPort),
-			"relay_c": relayC,
-			"relay_b": relayB,
-			"leaf_a":  leafA,
+			"socks_port":   fmt.Sprintf("%d", socksPort),
+			"socks_addr":   fmt.Sprintf("127.0.0.1:%d", socksPort),
+			"relay_c":      relayC,
+			"relay_b":      relayB,
+			"leaf_a":       leafA,
 		},
 		Processes: []runner.ProcessSpec{
 			serverConsoleProcess(fmt.Sprintf("127.0.0.1:%d", serverPort), "--debug -s tcp://0.0.0.0:{{server_port}}/?wrapper=raw -i 127.0.0.1 --no-sub"),
@@ -2375,16 +2375,16 @@ func buildRelayTopologyFixture(t *testing.T) runner.FixtureSpec {
 	return runner.FixtureSpec{
 		HelperTest: e2eHelperTestPattern,
 		Vars: runner.Vars{
-			"server_port": fmt.Sprintf("%d", serverPort),
-			"server_addr": fmt.Sprintf("127.0.0.1:%d", serverPort),
-			"relay_port":  fmt.Sprintf("%d", relayPort),
-			"relay_addr":  fmt.Sprintf("127.0.0.1:%d", relayPort),
-			"socks_port":  fmt.Sprintf("%d", socksPort),
-			"socks_addr":  fmt.Sprintf("127.0.0.1:%d", socksPort),
-			"sub_port":    fmt.Sprintf("%d", subPort),
+			"server_port":  fmt.Sprintf("%d", serverPort),
+			"server_addr":  fmt.Sprintf("127.0.0.1:%d", serverPort),
+			"relay_port":   fmt.Sprintf("%d", relayPort),
+			"relay_addr":   fmt.Sprintf("127.0.0.1:%d", relayPort),
+			"socks_port":   fmt.Sprintf("%d", socksPort),
+			"socks_addr":   fmt.Sprintf("127.0.0.1:%d", socksPort),
+			"sub_port":     fmt.Sprintf("%d", subPort),
 			"topology_url": fmt.Sprintf("http://127.0.0.1:%d/topology", subPort),
-			"relay_alias": relayAlias,
-			"leaf_alias":  leafAlias,
+			"relay_alias":  relayAlias,
+			"leaf_alias":   leafAlias,
 		},
 		Processes: []runner.ProcessSpec{
 			{

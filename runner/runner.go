@@ -96,9 +96,9 @@ type RunnerConfig struct {
 	ConsoleURLs     []*core.URL
 	Proxies         []*url.URL
 	ExtraServes     []ExtraServe
-	InboundSide     string    // "local", "remote", or "" (connect-only)
-	IsServerMode    bool      // true if using -s/--server, false if using -c/--client
-	IsRelayMode     bool      // true if both -c and -s are specified
+	InboundSide     string      // "local", "remote", or "" (connect-only)
+	IsServerMode    bool        // true if using -s/--server, false if using -c/--client
+	IsRelayMode     bool        // true if both -c and -s are specified
 	RelayListenURLs []*core.URL // -s addresses used for relay listening
 }
 
