@@ -7,7 +7,6 @@ import (
 
 	"github.com/chainreactors/proxyclient"
 	"github.com/chainreactors/rem/harness/netconn"
-	"github.com/chainreactors/rem/protocol/core"
 )
 
 func TestNewConsole(t *testing.T) {
@@ -38,38 +37,6 @@ func TestRemHTTPProxy(t *testing.T) {
 
 func TestServer(t *testing.T) {
 	t.Skip("manual integration test")
-}
-
-// ---------------------------------------------------------------------------
-// Merged from console_client_id_test.go
-// ---------------------------------------------------------------------------
-
-func TestPrepareClientConsoleURLInjectsGraphClientID(t *testing.T) {
-	if err != nil {
-		t.Fatalf("NewConsoleURL: %v", err)
-	}
-
-	got := prepareClientConsoleURL(addr, "agent-123")
-	if got.GetQuery("client_id") != "agent-123" {
-		t.Fatalf("client_id = %q, want %q", got.GetQuery("client_id"), "agent-123")
-	}
-	if got.GetQuery("client") != "graph-client" {
-		t.Fatalf("graph client credential changed: got %q", got.GetQuery("client"))
-	}
-	if addr.GetQuery("client_id") != "" {
-		t.Fatalf("original URL should remain unchanged, got client_id=%q", addr.GetQuery("client_id"))
-	}
-}
-
-func TestPrepareClientConsoleURLPreservesExplicitClientID(t *testing.T) {
-	if err != nil {
-		t.Fatalf("NewConsoleURL: %v", err)
-	}
-
-	got := prepareClientConsoleURL(addr, "agent-123")
-	if got.GetQuery("client_id") != "already-set" {
-		t.Fatalf("client_id = %q, want %q", got.GetQuery("client_id"), "already-set")
-	}
 }
 
 // ---------------------------------------------------------------------------

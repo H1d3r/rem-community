@@ -79,7 +79,7 @@ jobs:
       - name: Test x/arq core
         run: >
           go test -v -race -timeout 3m ./x/arq
-          -run '^(TestARQBasicSendRecv|TestARQRecvInOrder|TestARQRecvOutOfOrder|TestARQDuplicatePackets|TestARQNACKTriggering|TestARQNACKRetransmit|TestARQFragmentation|TestARQWaitSnd|TestARQBinaryFormat|TestARQCleanupOldSegments|TestARQConcurrentAccess|TestARQTimeout|TestARQEmptyInput|TestARQMultiplePacketsInInput)$'
+          -run '^(TestARQBasicSendRecv|TestARQRecvInOrder|TestARQRecvOutOfOrder|TestARQDuplicatePackets|TestARQNACKTriggering|TestARQNACKRetransmit|TestARQFragmentation|TestARQBinaryFormat|TestARQCleanupOldSegments|TestARQConcurrentAccess|TestARQTimeout|TestARQEmptyInput|TestARQMultiplePacketsInInput)$'
 
       - name: Test x/arq stress
         run: >

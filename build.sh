@@ -32,7 +32,7 @@ DEFAULT_OSARCH="windows/amd64 windows/386 linux/amd64 linux/arm64 darwin/amd64 d
 
 # 设置FULL版本的模块列表
 FULL_APPLICATION="http,raw,socks,portforward,shadowsocks,trojan"
-FULL_TRANSPORT="tcp,udp,websocket,unix,icmp,http,memory"
+FULL_TRANSPORT="tcp,udp,websocket,icmp,http,memory"
 
 
 # 生成配置文件函数
