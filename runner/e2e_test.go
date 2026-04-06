@@ -181,7 +181,7 @@ func runReconfigureServerHelper(t *testing.T) {
 	}
 	go func() {
 		if err := console.Run(); err != nil {
-			t.Fatalf("console.Run: %v", err)
+			t.Errorf("console.Run: %v", err)
 		}
 	}()
 
@@ -2037,6 +2037,7 @@ func multiServeDualSOCKSConcurrentScenario() runner.Scenario {
 			var wg sync.WaitGroup
 			errs := make(chan error, reqsPerServe*2)
 			for _, endpoint := range []string{"socks_addr_1", "socks_addr_2"} {
+				endpoint := endpoint
 				addr := fx.Endpoint(endpoint)
 				for i := 0; i < reqsPerServe; i++ {
 					wg.Add(1)
