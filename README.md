@@ -279,7 +279,7 @@ lib.InitDialer()
 lib.RemDial(c_char_p(b"-c tcp://server:34996 -l socks5://127.0.0.1:1080"))
 ```
 
-导出函数: `InitDialer()`, `RemDial()`, `MemoryDial()`, `MemoryRead()`, `MemoryWrite()`, `MemoryClose()`, `CleanupAgent()`
+导出函数: `InitDialer()`, `RemDial()`, `MemoryDial()`, `MemoryRead()`, `MemoryTryRead()`, `MemoryReadTimeout()`, `MemoryWrite()`, `MemoryClose()`, `CleanupAgent()`
 
 ## CLI 参考
 

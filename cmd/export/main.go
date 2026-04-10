@@ -11,6 +11,7 @@ const (
 	ErrNoConsoleURL    = core.ErrNoConsoleURL
 	ErrCreateConsole   = core.ErrCreateConsole
 	ErrDialFailed      = core.ErrDialFailed
+	ErrWouldBlock      = core.ErrWouldBlock
 )
 
 var conns = &core.Conns

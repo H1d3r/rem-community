@@ -9,6 +9,7 @@ const (
 	ErrNoConsoleURL    = 4
 	ErrCreateConsole   = 5
 	ErrDialFailed      = 6
+	ErrWouldBlock      = 7 // Non-blocking read/write: no data available
 )
 
 var Conns sync.Map
